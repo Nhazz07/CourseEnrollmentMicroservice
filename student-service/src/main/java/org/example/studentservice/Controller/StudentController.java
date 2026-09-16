@@ -1,7 +1,8 @@
 package org.example.studentservice.Controller;
 
 import org.example.studentservice.Dto.ApiResponse;
-import org.example.studentservice.Entity.Student;
+import org.example.studentservice.Dto.Request.StudentRequestDto;
+import org.example.studentservice.Dto.Response.StudentResponseDto;
 import org.example.studentservice.Service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,10 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Student>>> getAllStudents() {
-        List<Student> students = studentService.getAllStudents();
+    public ResponseEntity<ApiResponse<List<StudentResponseDto>>> getAllStudents() {
+        List<StudentResponseDto> students = studentService.getAllStudents();
 
-        ApiResponse<List<Student>> response = new ApiResponse<>(
+        ApiResponse<List<StudentResponseDto>> response = new ApiResponse<>(
                 true,
                 "Student Retrieved Successfully",
                 students
@@ -33,11 +34,11 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Student>> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<StudentResponseDto>> getStudentById(@PathVariable Long id) {
 
-        Student student = studentService.getStudentById(id);
+        StudentResponseDto student = studentService.getStudentById(id);
 
-        ApiResponse<Student> response = new ApiResponse<>(
+        ApiResponse<StudentResponseDto> response = new ApiResponse<>(
                 true,
                 "Student Retrieved Successfully",
                 student
@@ -46,10 +47,10 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Student>> createStudent(@RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
+    public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@RequestBody StudentRequestDto request) {
+        StudentResponseDto createdStudent = studentService.createStudent(request);
 
-        ApiResponse<Student> response = new ApiResponse<>(
+        ApiResponse<StudentResponseDto> response = new ApiResponse<>(
                 true,
                 "Student Created Successfully",
                 createdStudent
@@ -60,13 +61,13 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Student>> updateStudent(
+    public ResponseEntity<ApiResponse<StudentResponseDto>> updateStudent(
             @PathVariable Long id,
-            @RequestBody Student student
+            @RequestBody StudentRequestDto request
     ) {
-        Student updateStudent = studentService.updateStudent(id,student);
+        StudentResponseDto updateStudent = studentService.updateStudent(id,request);
 
-        ApiResponse<Student> response = new ApiResponse<>(
+        ApiResponse<StudentResponseDto> response = new ApiResponse<>(
                 true,
                 "Student Updated Successfully ",
                 updateStudent
