@@ -1,5 +1,6 @@
 package org.example.studentservice.Controller;
 
+import org.example.studentservice.Dto.ApiResponse;
 import org.example.studentservice.Entity.Student;
 import org.example.studentservice.Service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -19,38 +20,69 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
+    public ResponseEntity<ApiResponse<List<Student>>> getAllStudents() {
+        List<Student> students = studentService.getAllStudents();
+
+        ApiResponse<List<Student>> response = new ApiResponse<>(
+                true,
+                "Student Retrieved Successfully",
+                students
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.getStudentById(id));
+    public ResponseEntity<ApiResponse<Student>> getStudentById(@PathVariable Long id) {
+
+        Student student = studentService.getStudentById(id);
+
+        ApiResponse<Student> response = new ApiResponse<>(
+                true,
+                "Student Retrieved Successfully",
+                student
+        );
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+    public ResponseEntity<ApiResponse<Student>> createStudent(@RequestBody Student student) {
         Student createdStudent = studentService.createStudent(student);
 
+        ApiResponse<Student> response = new ApiResponse<>(
+                true,
+                "Student Created Successfully",
+                createdStudent
+        );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdStudent);
+                .body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(
+    public ResponseEntity<ApiResponse<Student>> updateStudent(
             @PathVariable Long id,
             @RequestBody Student student
     ) {
-        return ResponseEntity.ok(
-                studentService.updateStudent(id, student)
+        Student updateStudent = studentService.updateStudent(id,student);
+
+        ApiResponse<Student> response = new ApiResponse<>(
+                true,
+                "Student Updated Successfully ",
+                updateStudent
         );
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
 
-        return ResponseEntity.noContent().build();
+        ApiResponse<Void> response = new ApiResponse<>(
+                true,
+                "Student Deleted Successfully",
+                null
+        );
+        return ResponseEntity.ok(response);
     }
 }
