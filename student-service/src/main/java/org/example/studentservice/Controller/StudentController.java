@@ -1,5 +1,7 @@
 package org.example.studentservice.Controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.example.studentservice.Dto.ApiResponse;
 import org.example.studentservice.Dto.Request.StudentRequestDto;
 import org.example.studentservice.Dto.Response.StudentResponseDto;
@@ -34,7 +36,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentResponseDto>> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<StudentResponseDto>> getStudentById(@PathVariable @Positive Long id) {
 
         StudentResponseDto student = studentService.getStudentById(id);
 
@@ -47,7 +49,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@RequestBody StudentRequestDto request) {
+    public ResponseEntity<ApiResponse<StudentResponseDto>> createStudent(@RequestBody @Valid StudentRequestDto request) {
         StudentResponseDto createdStudent = studentService.createStudent(request);
 
         ApiResponse<StudentResponseDto> response = new ApiResponse<>(
@@ -62,8 +64,8 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<StudentResponseDto>> updateStudent(
-            @PathVariable Long id,
-            @RequestBody StudentRequestDto request
+            @PathVariable @Positive Long id,
+            @RequestBody @Valid StudentRequestDto request
     ) {
         StudentResponseDto updateStudent = studentService.updateStudent(id,request);
 
@@ -76,7 +78,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable @Positive Long id) {
         studentService.deleteStudent(id);
 
         ApiResponse<Void> response = new ApiResponse<>(
